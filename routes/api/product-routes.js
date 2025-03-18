@@ -9,12 +9,13 @@ router.get('/', async (req, res) => {
   // be sure to include its associated Category and Tag data
   try {
     const data = await Product.findAll({
-      include: [{ model: Category, required: false, through: ProductTag },
-      { model: Tag, required: false, through: ProductTag }]
+      include: [{ model: Category, required: true },
+      { model: Tag, required: false, through: ProductTag, as: 'tags'}]
     });
     res.status(200).json(data);
   }
-  catch {
+  catch (err) {
+    console.log(err)
     res.status(500).json(err)
   }
 });
@@ -25,12 +26,12 @@ router.get('/:id', async (req, res) => {
   // be sure to include its associated Category and Tag data
   try {
     const data = await Product.findByPk(req.params.id, {
-      include: [{ model: Category, required: false, through: ProductTag },
-      { model: Tag, required: false, through: ProductTag }]
+      include: [{ model: Category, required: false },
+      { model: Tag, required: false, through: ProductTag, as: 'tags' }]
     });
     data ? res.status(200).json(data) : res.status(404).json({ message: "Product ID not found." });
   }
-  catch {
+  catch (err) {
     res.status(500).json(err)
   }
 });
@@ -120,7 +121,7 @@ router.delete('/:id', async (req, res) => {
     });
     data ? res.status(200).json(data) : res.status(404).json({ message: "Delete product ID not found." });
   }
-  catch {
+  catch (err){
     res.status(500).json(err)
   }
 });

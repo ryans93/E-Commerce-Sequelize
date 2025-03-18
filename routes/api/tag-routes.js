@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
     const data = await Tag.findAll({ include: [{ model: Product, required: false, through: ProductTag }] });
     res.status(200).json(data);
   }
-  catch {
+  catch (err) {
     res.status(500).json(err)
   }
 });
@@ -24,7 +24,7 @@ router.get('/:id', async (req, res) => {
     });
     data ? res.status(200).json(data) : res.status(404).json({ message: "Tag ID not found." });
   }
-  catch {
+  catch (err) {
     res.status(500).json(err)
   }
 });
@@ -35,7 +35,7 @@ router.post('/', async (req, res) => {
     const data = await Tag.create(req.body);
     res.status(200).json(data);
   }
-  catch {
+  catch (err) {
     res.status(500).json(err)
   }
 });
@@ -48,7 +48,7 @@ router.put('/:id', async (req, res) => {
     });
     data ? res.status(200).json(data) : res.status(404).json({ message: "Update tag ID not found." });
   }
-  catch {
+  catch (err) {
     res.status(500).json(err)
   }
 });
@@ -61,7 +61,7 @@ router.delete('/:id', async (req, res) => {
     });
     data ? res.status(200).json(data) : res.status(404).json({ message: "Delete tag ID not found." });
   }
-  catch {
+  catch (err) {
     res.status(500).json(err)
   }
 });
